@@ -1,13 +1,13 @@
 package main
 
-import "log"
-
 import (
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/pankajhamal/ECOMMERCE-API/internal/products"
 )
 
 //mount
@@ -26,6 +26,10 @@ func (app *application) mount() http.Handler{
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request){
 		w.Write([]byte("Hello pankaj"))
 	})
+
+	productService := products.NewService()
+	productHandler := products.NewHandler(productService)
+	r.Get("/products", productHandler.ListProducts)
 
 	// http.ListenAndServe(":3333", r)
 
